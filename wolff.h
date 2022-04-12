@@ -122,7 +122,7 @@ class WOLFF {
         m = 0.0;
         m1 = 0.0;
         m2 = 0.0;
-        m4 = 0.0;            
+        m4 = 0.0;
 
         for (int n = 0; n < n_bins; n++) {
             m0 = 0.0;
