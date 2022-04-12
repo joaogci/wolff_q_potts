@@ -17,6 +17,7 @@ class WOLFF {
         int q;
         int L;
         int N;
+        int dim;
         int *spins;
 
         int *m_counter;
@@ -29,17 +30,21 @@ class WOLFF {
 
         bool write_header = true;
 
-        enum dirs {RIGHT, LEFT};
+        enum dirs {RIGHT, LEFT, UP, DOWN};
 
-        int indx(int x) {return x;}
-        int xpos(int i) {return i % L;}
+        int indx(int x, int y) {return y * L + x;}
+        int xpos(int i) {return (dim == 1) ? i % L : i / L;}
+        int ypos(int i) {return (dim == 1) ? 0 : i % L;}
 
         int nbr(int i, int dir) {
             int x = xpos(i);
+            int y = ypos(i);
 
             switch (dir) {
-                case RIGHT: return indx((x + 1) % L);
-                case LEFT: return indx((x - 1 + L) % L);
+                case RIGHT: return indx((x + 1) % L, y);
+                case LEFT: return indx((x - 1 + L) % L, y);
+                case UP: return indx(x, (y + 1) % L);
+                case DOWN: return indx(x, (y - 1 + L) % L);
             }
             return -1;
         }
@@ -51,7 +56,7 @@ class WOLFF {
             m_counter[oldstate]--;
             m_counter[newstate]++;
 
-            for (int dir = 0; dir < 2; dir++) {
+            for (int dir = 0; dir < dim * 2; dir++) {
                 int j = nbr(s, dir);
                 if (spins[j] == oldstate && rand() / (RAND_MAX + 1.) < p_connect(T)) {
                     flip_and_build_from(j, T);
@@ -65,13 +70,14 @@ class WOLFF {
 
     public:
 
-    WOLFF(int q_, int L_, int N_) {
+    WOLFF(int q_, int L_, int N_, int dim_) {
         int i, s;
         srand((unsigned) time(0));
 
         q = q_;
         L = L_;
         N = N_;
+        dim = dim_;
 
         spins = new int[N];
 
