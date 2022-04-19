@@ -33,8 +33,8 @@ class WOLFF {
         enum dirs {RIGHT, LEFT, UP, DOWN};
 
         int indx(int x, int y) {return y * L + x;}
-        int xpos(int i) {return (dim == 1) ? i % L : i / L;}
-        int ypos(int i) {return (dim == 1) ? 0 : i % L;}
+        int xpos(int i) {return i % L;}
+        int ypos(int i) {return i / L;}
 
         int nbr(int i, int dir) {
             int x = xpos(i);
