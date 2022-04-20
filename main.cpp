@@ -4,16 +4,22 @@
 
 int main(int argc, char **argv) {
     int q = 3;
-    int L = 64;
+    int L = 16;
     int dim = 2;
+    int N = pow(L, dim);
 
-    WOLFF wolff(q, L, L * L, dim);
+    WOLFF wolff(q, L, N, dim);
 
-    double T_vals[] = {0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0};
-    for (int t_idx = 0; t_idx < 9; t_idx++) {
+    int size_T = 30;
+    double T_s = 0;
+    double T_e = 3;
+    double T_vals[size_T];
+
+    for (int t_idx = 0; t_idx < size_T; t_idx++) {
+        T_vals[t_idx] = (T_e - T_s) * t_idx / size_T;
+
         wolff.simulate(T_vals[t_idx], 1e5, 1e6, 1);
-        // wolff.print_results();
-        wolff.write_results("../", "2D_L64_q3_potts_pt.csv");
+        wolff.write_results("../", "2D_L16_q3_potts.csv");
         printf("t_idx = %i \n", t_idx);
     }
 
